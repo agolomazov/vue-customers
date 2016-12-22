@@ -1,5 +1,6 @@
 <template>
   <div class="add-customers container">
+    <router-link to="/" class="btn btn-default btn-sm">Back</router-link>
     <h1 class="page-header">Edit customer</h1>
     <alert v-if="alert" :message="alert"></alert>
     <form v-on:submit.prevent="editCustomer(customer.id)">

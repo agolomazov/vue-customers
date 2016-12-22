@@ -4,7 +4,8 @@
     <alert v-if="alert" v-bind:message="alert"></alert>
     <h1 class="page-header">{{ fullName }}
       <span class="pull-right">
-        <button @click="deleteCustomer(customer.id)" class="btn btn-default btn-sm btn-danger">Delete</button>
+        <button @click="deleteCustomer(customer.id)" class="btn btn-default btn-sm btn-danger">Удалить</button>
+        <router-link class="btn btn-default btn-sm btn-warning" v-bind:to="'/customer/edit/' + this.$route.params.id">Редактировать</router-link>
       </span>
     </h1>
     <ul class="list-group">
@@ -53,22 +54,26 @@
           })
       },
       deleteCustomer(id){
-        this.$http.delete('http://customers.rest/api/customer/delete/' + id).
+        var confirmAnswer = confirm('Вы действительно хотите удалить данные о покупателе?')
+
+        if(confirmAnswer){
+          this.$http.delete('http://customers.rest/api/customer/delete/' + id).
           then(function(response){
             this.alert = ''
-          this.$router.push({
+            this.$router.push({
               path: '/',
               query: {
                 alert: 'Customer deleted'
               }
             })
-        }, function (error) {
+          }, function (error) {
             this.alert = error.statusText
 
             setTimeout(() => {
               this.alert = ''
             }, 3000)
-        })
+          })
+        }
       }
     },
     created () {
